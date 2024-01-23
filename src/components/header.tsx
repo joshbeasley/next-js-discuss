@@ -1,5 +1,7 @@
 import { auth } from '@/auth'
 import {
+  Avatar,
+  Button,
   Input,
   Navbar,
   NavbarBrand,
@@ -14,9 +16,22 @@ export default async function Header() {
   let authContent: React.ReactNode
 
   if (session?.user) {
-    authContent = <div>User Image</div>
+    authContent = <Avatar src={session.user.image || ''} />
   } else {
-    authContent = <div>Sigin/signout</div>
+    authContent = (
+      <>
+        <NavbarItem>
+          <Button type='submit' color='secondary' variant='bordered'>
+            Sign In
+          </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <Button type='submit' color='primary' variant='flat'>
+            Sign Up
+          </Button>
+        </NavbarItem>
+      </>
+    )
   }
 
   return (
@@ -31,9 +46,7 @@ export default async function Header() {
           <Input />
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify='end'>
-        <NavbarItem>{authContent}</NavbarItem>
-      </NavbarContent>
+      <NavbarContent justify='end'>{authContent}</NavbarContent>
     </Navbar>
   )
 }
