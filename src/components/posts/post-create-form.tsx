@@ -7,15 +7,23 @@ import {
   PopoverContent,
   PopoverTrigger,
   Textarea,
+  divider,
 } from '@nextui-org/react'
 import FormButton from '../common/form-button'
 import { useFormState } from 'react-dom'
 import * as actions from '@/actions'
 
-export default function PostCreateForm() {
-  const [formState, action] = useFormState(actions.createPost, {
-    errors: {},
-  })
+interface PostCreateFormProps {
+  slug: string
+}
+
+export default function PostCreateForm({ slug }: PostCreateFormProps) {
+  const [formState, action] = useFormState(
+    actions.createPost.bind(null, slug),
+    {
+      errors: {},
+    }
+  )
 
   return (
     <Popover placement='left'>
@@ -42,6 +50,11 @@ export default function PostCreateForm() {
               isInvalid={!!formState.errors.content}
               errorMessage={formState.errors.content?.join(', ')}
             />
+            {formState.errors._form ? (
+              <div className='rounded p-2 bg-red-200 border'>
+                {formState.errors._form.join(', ')}
+              </div>
+            ) : null}
             <FormButton>Create Post</FormButton>
           </div>
         </form>
